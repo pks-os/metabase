@@ -54,7 +54,8 @@
    channels            (su/non-empty [su/Map])
    skip_if_empty       (s/maybe s/Bool)
    collection_id       (s/maybe su/IntGreaterThanZero)
-   collection_position (s/maybe su/IntGreaterThanZero)}
+   collection_position (s/maybe su/IntGreaterThanZero)
+   dashboard_id        (s/maybe su/IntGreaterThanZero)}
   ;; make sure we are allowed to *read* all the Cards we want to put in this Pulse
   (check-card-read-permissions cards)
   ;; if we're trying to create this Pulse inside a Collection, make sure we have write permissions for that collection
@@ -63,7 +64,8 @@
                     :creator_id          api/*current-user-id*
                     :skip_if_empty       skip_if_empty
                     :collection_id       collection_id
-                    :collection_position collection_position}]
+                    :collection_position collection_position
+                    :dashboard_id        dashboard_id}]
     (db/transaction
       ;; Adding a new pulse at `collection_position` could cause other pulses in this collection to change position,
       ;; check that and fix it if needed
@@ -197,7 +199,8 @@
    channels            (su/non-empty [su/Map])
    skip_if_empty       (s/maybe s/Bool)
    collection_id       (s/maybe su/IntGreaterThanZero)
-   collection_position (s/maybe su/IntGreaterThanZero)}
+   collection_position (s/maybe su/IntGreaterThanZero)
+   dashboard_id        (s/maybe su/IntGreaterThanZero)}
   (check-card-read-permissions cards)
   (p/send-pulse! (assoc body :creator_id api/*current-user-id*))
   {:ok true})

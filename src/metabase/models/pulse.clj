@@ -20,6 +20,7 @@
             [metabase.events :as events]
             [metabase.models.card :refer [Card]]
             [metabase.models.collection :as collection]
+            [metabase.models.dashboard :as dashboard :refer [Dashboard]]
             [metabase.models.dashboard-card :as dashboard-card :refer [DashboardCard]]
             [metabase.models.interface :as i]
             [metabase.models.permissions :as perms]
@@ -160,7 +161,7 @@
   "Hydrate Pulse or Alert with the Fields needed for sending it."
   [notification :- PulseInstance]
   (-> notification
-      (hydrate :creator :cards [:channels :recipients])
+      (hydrate :creator :cards :dashboard [:channels :recipients])
       (m/dissoc-in [:details :emails])))
 
 (s/defn ^:private hydrate-notifications :- [PulseInstance]
@@ -389,7 +390,8 @@
                 :creator_id                           su/IntGreaterThanZero
                 (s/optional-key :skip_if_empty)       (s/maybe s/Bool)
                 (s/optional-key :collection_id)       (s/maybe su/IntGreaterThanZero)
-                (s/optional-key :collection_position) (s/maybe su/IntGreaterThanZero)}]
+                (s/optional-key :collection_position) (s/maybe su/IntGreaterThanZero)
+                (s/optional-key :dashboard_id)        (s/maybe su/IntGreaterThanZero)}]
   (let [pulse-id (create-notification-and-add-cards-and-channels! kvs cards channels)]
     ;; return the full Pulse (and record our create event)
     (events/publish-event! :pulse-create (retrieve-pulse pulse-id))))
