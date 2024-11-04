@@ -26,7 +26,7 @@ import {
 } from "metabase/ui";
 import { createMockUndo } from "metabase-types/api/mocks";
 
-import { BulkActionBarInner } from "../../../components/BulkActionBar/BulkActionBar";
+import { BulkActionBarPortal } from "../../../components/BulkActionBar/BulkActionBar";
 
 const _Launchers = ({
   nested,
@@ -145,11 +145,11 @@ export const FloatingElementsDemo = ({
         </FloatingUndoList>
       )}
       {Array.from({ length: toastCount }).map((_, index) => (
-        <BulkActionBarInner
+        <BulkActionBarPortal
           key={`simple-bulk-action-bar-${index}`}
           opened
           message="Toast message"
-          isNavbarOpen={false}
+          p="lg"
         >
           <CloseButton
             onClick={() => setToastCount(c => c - 1)}
@@ -157,7 +157,7 @@ export const FloatingElementsDemo = ({
             bg="transparent"
           />
           {enableNesting && <Launchers nested />}
-        </BulkActionBarInner>
+        </BulkActionBarPortal>
       ))}
       {Array.from({ length: legacyModalCount }).map((_, index) => (
         <LegacyModal isOpen key={`legacy-modal-${index}`}>
