@@ -80,6 +80,8 @@ function convertActionToQuestionCard(
     enable_embedding: false,
     embedding_params: null,
     initially_published_at: null,
+    dashboard_count: null,
+    dashboard_id: null,
   };
 }
 
