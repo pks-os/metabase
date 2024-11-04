@@ -1,7 +1,7 @@
 import type { ModalBaseProps } from "@mantine/core";
 
-/** To avoid z-index complications, change the props so that no portal exists
- * when the popover is closed */
+/** To avoid z-index complications, change the props so that the portal doesn't
+ * exist when the floating element is closed */
 export const preventEagerPortal = <
   T extends Partial<Pick<ModalBaseProps, "withinPortal" | "opened">>,
 >(
