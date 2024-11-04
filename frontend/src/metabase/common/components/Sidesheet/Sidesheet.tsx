@@ -1,4 +1,3 @@
-import cx from "classnames";
 import type React from "react";
 import { t } from "ttag";
 
@@ -46,7 +45,7 @@ export function Sidesheet({
         w={sizes[size]}
         bg="bg-light"
         data-testid="sidesheet"
-        className={cx(Styles.SidesheetContent)}
+        className={Styles.SidesheetContent}
       >
         <Modal.Header bg="bg-light" px="xl">
           {title && (
