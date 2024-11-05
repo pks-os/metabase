@@ -1,9 +1,11 @@
 import type React from "react";
 import { t } from "ttag";
+import cx from "classnames";
 
 import { Modal, Stack } from "metabase/ui";
 
 import Styles from "./sidesheet.module.css";
+import Animation from "metabase/css/core/animation.module.css";
 
 export type SidesheetSize = "xs" | "sm" | "md" | "lg" | "xl" | "auto";
 
@@ -45,7 +47,7 @@ export function Sidesheet({
         w={sizes[size]}
         bg="bg-light"
         data-testid="sidesheet"
-        className={Styles.SidesheetContent}
+        className={cx(Styles.SidesheetContent, Animation.slideLeft)}
       >
         <Modal.Header bg="bg-light" px="xl">
           {title && (

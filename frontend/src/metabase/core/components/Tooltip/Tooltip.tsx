@@ -106,7 +106,7 @@ function Tooltip({
       <TippyComponent
         theme={theme}
         className={cx("popover", ZIndex.FloatingElement, className)}
-        zIndex={zIndex}
+        //zIndex={zIndex}
         appendTo={appendTo}
         content={tooltip}
         visible={visible}

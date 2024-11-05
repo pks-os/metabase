@@ -1,6 +1,5 @@
 .SidesheetContent {
   &:not([data-css-specificity-hack="🤷‍♀️"]) {
-    composes: slideLeft from "style";
     position: fixed;
     height: 100dvh;
     max-height: 100dvh;

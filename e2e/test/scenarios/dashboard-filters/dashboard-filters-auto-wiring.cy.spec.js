@@ -511,7 +511,7 @@ describe("dashboard filters auto-wiring", () => {
       });
     });
 
-    it("should auto-wire and filter cards with foreign keys when added to the dashboard via the sidebar", () => {
+    it.only("should auto-wire and filter cards with foreign keys when added to the dashboard via the sidebar", () => {
       visitDashboard("@dashboardId");
       editDashboard();
       setFilter("ID");

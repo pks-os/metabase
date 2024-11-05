@@ -1,7 +1,0 @@
-.content {
-  composes: popInFromBottom from "style";
-}
-
-.overlay {
-  composes: fadeIn from "style";
-}

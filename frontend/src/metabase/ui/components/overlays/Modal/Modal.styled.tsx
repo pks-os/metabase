@@ -1,15 +1,14 @@
 import type { MantineThemeOverride } from "@mantine/core";
 import { t } from "ttag";
-
-import S from "./Modal.module.css";
+import Animation from "metabase/css/core/animation.module.css";
 
 const DEFAULT_MODAL_SPACING = "lg";
 
 export const getModalOverrides = (): MantineThemeOverride["components"] => ({
   Modal: {
     classNames: {
-      overlay: S.overlay,
-      content: S.content,
+      overlay: Animation.fadeIn,
+      content: Animation.popInFromBottom,
     },
     defaultProps: {
       padding: DEFAULT_MODAL_SPACING,

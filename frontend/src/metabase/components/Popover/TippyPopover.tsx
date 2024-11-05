@@ -152,7 +152,11 @@ function TippyPopover({
       content={
         shouldShowContent ? (
           <EventSandbox disabled={disableContentSandbox}>
-            <div style={{ zIndex: zIndex }}>{content}</div>
+            {/*
+            FIXME: removing this div for now
+            <div style={{ zIndex: zIndex }}>*/}
+            {content}
+            {/*</div>*/}
           </EventSandbox>
         ) : null
       }
