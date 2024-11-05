@@ -96,7 +96,7 @@ type SyncColumnNamesOpts<T> = {
   settings: T[];
   newColumns: ColumnInfo[];
   oldColumns: ColumnInfo[];
-  getColumnName: (setting: T) => string | undefined;
+  getColumnName: (setting: T) => string | null;
   setColumnName: (setting: T, newName: string) => T;
   createSetting: (column: ColumnInfo) => T;
   shouldCreateSetting: (column: ColumnInfo) => boolean | undefined;

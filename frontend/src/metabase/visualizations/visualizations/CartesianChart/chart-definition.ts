@@ -18,10 +18,7 @@ import {
   validateStacking,
 } from "metabase/visualizations/lib/settings/validation";
 import { SERIES_SETTING_KEY } from "metabase/visualizations/shared/settings/series";
-import type {
-  Visualization,
-  VisualizationSettingsDefinitions,
-} from "metabase/visualizations/types";
+import type { Visualization } from "metabase/visualizations/types";
 import { isDimension, isMetric } from "metabase-lib/v1/types/utils/isa";
 import type { RawSeries, SeriesSettings } from "metabase-types/api";
 
@@ -106,16 +103,15 @@ export const getCartesianChartDefinition = (
   };
 };
 
-export const COMBO_CHARTS_SETTINGS_DEFINITIONS: VisualizationSettingsDefinitions =
-  {
-    ...STACKABLE_SETTINGS,
-    ...LINE_SETTINGS,
-    ...GRAPH_GOAL_SETTINGS,
-    ...GRAPH_TREND_SETTINGS,
-    ...GRAPH_COLORS_SETTINGS,
-    ...GRAPH_AXIS_SETTINGS,
-    ...GRAPH_DISPLAY_VALUES_SETTINGS,
-    ...GRAPH_DATA_SETTINGS,
-    ...TOOLTIP_SETTINGS,
-    ...LEGEND_SETTINGS,
-  };
+export const COMBO_CHARTS_SETTINGS_DEFINITIONS = {
+  ...STACKABLE_SETTINGS,
+  ...LINE_SETTINGS,
+  ...GRAPH_GOAL_SETTINGS,
+  ...GRAPH_TREND_SETTINGS,
+  ...GRAPH_COLORS_SETTINGS,
+  ...GRAPH_AXIS_SETTINGS,
+  ...GRAPH_DISPLAY_VALUES_SETTINGS,
+  ...GRAPH_DATA_SETTINGS,
+  ...TOOLTIP_SETTINGS,
+  ...LEGEND_SETTINGS,
+};

@@ -12,9 +12,8 @@ export type Widget<
   Widget extends ComponentType<any> = ComponentType<any>,
 > = {
   id: K;
-  section: string;
-} & Partial<{
   value: VisualizationSettings[K];
+  section: string;
   title: string;
   hidden: boolean;
   marginBottom: string;
@@ -22,20 +21,19 @@ export type Widget<
   set: boolean;
   onChange: never;
   onChangeSettings: never;
-}> &
-  Omit<
-    VisualizationSettingDefinition<K>,
-    | "id"
-    | "value"
-    | "section"
-    | "title"
-    | "hidden"
-    | "marginBottom"
-    | "disabled"
-    | "props"
-    | "set"
-    | "widget"
-  > &
+} & Omit<
+  VisualizationSettingDefinition<K>,
+  | "id"
+  | "value"
+  | "section"
+  | "title"
+  | "hidden"
+  | "marginBottom"
+  | "disabled"
+  | "props"
+  | "set"
+  | "widget"
+> &
   (Widget extends ComponentType<infer P>
     ? WidgetComponentDef<Widget, P, VisualizationSettings[K]>
     : never);
