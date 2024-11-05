@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 
 import type { OptionsType } from "metabase/lib/formatting/types";
 import type { IconName, IconProps } from "metabase/ui";
@@ -11,6 +11,7 @@ import type Metadata from "metabase-lib/v1/metadata/Metadata";
 import type Query from "metabase-lib/v1/queries/Query";
 import type {
   Card,
+  DashboardId,
   DatasetColumn,
   DatasetData,
   RawSeries,
@@ -156,18 +157,34 @@ export type ColumnSettingDefinition<TValue, TProps = unknown> = {
     col: DatasetColumn,
     settings: OptionsType,
     onChange: (value: TValue) => void,
-    extra: { series: Series },
+    extra: {
+      series: Series;
+    },
   ) => TProps;
 };
 
-export type VisualizationSettingDefinition<TValue, TProps = void> = {
+// why do we have an object of extra values when we can just use the
+// widget definition as we do for marginBottom and others?
+export type SettingDefinitionExtra = {
+  transformedSeries?: TransformedSeries;
+  dashboardId?: DashboardId;
+};
+
+type BaseVisualizationSettingDefinition<TValue> = {
   section?: string;
   title?: string;
   group?: string;
-  widget?: string | React.ComponentType<TProps>;
   isValid?: (series: Series, settings: VisualizationSettings) => boolean;
-  getHidden?: (series: Series, settings: VisualizationSettings) => boolean;
-  getDefault?: (series: Series, settings: VisualizationSettings) => TValue;
+  getHidden?: (
+    series: Series,
+    settings: VisualizationSettings,
+    extra?: SettingDefinitionExtra,
+  ) => boolean;
+  getDefault?: (
+    series: Series,
+    settings: VisualizationSettings,
+  ) => TValue | null;
+  onUpdate?: (value: TValue, extra: SettingDefinitionExtra) => void;
   getValue?: (series: Series, settings: VisualizationSettings) => TValue;
   getDisabled?: (series: Series, settings: VisualizationSettings) => TValue;
   disabled?: boolean;
@@ -176,24 +193,59 @@ export type VisualizationSettingDefinition<TValue, TProps = void> = {
   getMarginBottom?: (series: Series, settings: VisualizationSettings) => string;
   persistDefault?: boolean;
   inline?: boolean;
-  props?: TProps;
-  getProps?: (
-    series: Series,
-    vizSettings: VisualizationSettings,
-    onChange: (value: TValue) => void,
-    extra: unknown,
-    onChangeSettings: (value: Record<string, any>) => void,
-  ) => TProps;
   readDependencies?: string[];
   writeDependencies?: string[];
   eraseDependencies?: string[];
-  // is the setting visible in the dashboard card viz settings
   dashboard?: boolean;
   useRawSeries?: boolean;
+  hidden?: boolean;
+  placeholder?: string;
+  index?: number;
 };
 
+export type WidgetComponentDef<Widget, P, TValue> = {
+  widget?: Widget;
+  props?: P;
+  getProps?: (
+    series: Series,
+    vizSettings: VisualizationSettings,
+    onChange: (value: TValue | null) => void,
+    extra: SettingDefinitionExtra,
+    onChangeSettings: (value: VisualizationSettings) => void,
+  ) => P;
+};
+
+export type WidgetStringDef<Widget, TValue> = {
+  widget?: Widget;
+  props?: unknown;
+  getProps?: (
+    series: Series,
+    vizSettings: VisualizationSettings,
+    onChange: (value: TValue | null) => void,
+    extra: SettingDefinitionExtra,
+    onChangeSettings: (value: VisualizationSettings) => void,
+  ) => unknown;
+};
+
+type VisualizationSettingWidgetDef<
+  TValue,
+  Widget extends string | ComponentType<any> = string | ComponentType<any>,
+> = Widget extends string
+  ? WidgetStringDef<Widget, TValue>
+  : Widget extends ComponentType<infer P>
+    ? WidgetComponentDef<Widget, P, TValue>
+    : never;
+
+export type VisualizationSettingDefinition<
+  K extends keyof VisualizationSettings = keyof VisualizationSettings,
+  Widget extends string | ComponentType<any> = string | ComponentType<any>,
+> = {
+  id?: K;
+} & BaseVisualizationSettingDefinition<VisualizationSettings[K]> &
+  VisualizationSettingWidgetDef<VisualizationSettings[K], Widget>;
+
 export type VisualizationSettingsDefinitions = {
-  [key: string]: VisualizationSettingDefinition<unknown, unknown>;
+  [K in keyof VisualizationSettings]: VisualizationSettingDefinition<K>;
 };
 
 export type VisualizationGridSize = {

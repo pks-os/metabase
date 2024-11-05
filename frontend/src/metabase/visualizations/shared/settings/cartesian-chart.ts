@@ -327,8 +327,10 @@ export const isXAxisScaleValid = (
   }
 
   return (
-    !isWaterfall ||
-    (xAxisScale && !WATERFALL_UNSUPPORTED_X_AXIS_SCALES.includes(xAxisScale))
+    (!isWaterfall ||
+      (xAxisScale &&
+        !WATERFALL_UNSUPPORTED_X_AXIS_SCALES.includes(xAxisScale))) ??
+    false
   );
 };
 
@@ -370,7 +372,11 @@ export function getDefaultBubbleSizeCol(data: DatasetData) {
   return getDefaultScatterColumns(data).bubble;
 }
 
-export function getDefaultColumns(series: RawSeries) {
+export function getDefaultColumns(series: RawSeries): {
+  dimensions: (DatasetColumn["name"] | null)[];
+  metrics: (DatasetColumn["name"] | null)[];
+  bubble?: DatasetColumn["name"] | null;
+} {
   if (series[0].card.display === "scatter") {
     return getDefaultScatterColumns(series[0].data);
   } else {

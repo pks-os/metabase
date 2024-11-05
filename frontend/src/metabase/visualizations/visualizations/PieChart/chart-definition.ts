@@ -31,7 +31,6 @@ import {
 import type {
   ComputedVisualizationSettings,
   VisualizationDefinition,
-  VisualizationSettingsDefinitions,
 } from "metabase/visualizations/types";
 import { isDimension, isMetric } from "metabase-lib/v1/types/utils/isa";
 import type { RawSeries, Series } from "metabase-types/api";
@@ -271,5 +270,5 @@ export const PIE_CHART_DEFINITION: VisualizationDefinition = {
       widget: "number",
       getDefault: getDefaultSliceThreshold,
     },
-  } as VisualizationSettingsDefinitions,
+  },
 };

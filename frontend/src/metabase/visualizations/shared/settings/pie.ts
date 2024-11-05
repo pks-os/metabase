@@ -20,6 +20,7 @@ import type {
   RawSeries,
   RowValue,
   RowValues,
+  VisualizationSettings,
 } from "metabase-types/api";
 
 export function getPieDimensions(settings: ComputedVisualizationSettings) {
@@ -57,7 +58,8 @@ export function getDefaultShowLabels(settings: ComputedVisualizationSettings) {
   return true;
 }
 
-export const getDefaultPercentVisibility = () => "legend";
+export const getDefaultPercentVisibility =
+  (): VisualizationSettings["pie.percent_visibility"] => "legend";
 
 export const getDefaultSliceThreshold = () => SLICE_THRESHOLD * 100;
 
