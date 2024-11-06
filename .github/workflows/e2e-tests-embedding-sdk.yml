@@ -95,7 +95,7 @@ jobs:
           name: metabase-ee-${{ github.event.pull_request.head.sha || github.sha }}-uberjar
 
   e2e-tests:
-    needs: [build]
+    needs: [get-build-requirements, build]
     if: |
       !cancelled() && needs.build.result == 'success'
     runs-on: ubuntu-22.04
