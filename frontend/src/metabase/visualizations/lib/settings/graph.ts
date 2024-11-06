@@ -127,18 +127,18 @@ export const GRAPH_DATA_SETTINGS: VisualizationSettingsDefinitions = {
         ? [null, "graph.max_categories"] // We want to show "graph.max_categories" setting for the breakout dimension (2nd)
         : [];
 
-      const addedDimensionLength = addedDimensions?.length ?? 0;
       return {
         options,
         addAnother:
-          options.length > addedDimensionLength &&
-          addedDimensionLength < maxDimensionsSupported &&
-          addedDimensions?.every(
+          addedDimensions &&
+          options.length > addedDimensions.length &&
+          addedDimensions.length < maxDimensionsSupported &&
+          addedDimensions.every(
             dimension => dimension !== undefined && dimension !== null,
           ) &&
           (vizSettings["graph.metrics"]
-            ? vizSettings["graph.metrics"].length
-            : 0) < 2
+            ? vizSettings["graph.metrics"].length < 2
+            : false)
             ? t`Add series breakout`
             : null,
         columns: data.cols,
@@ -186,10 +186,9 @@ export const GRAPH_DATA_SETTINGS: VisualizationSettingsDefinitions = {
     },
     getHidden: (_, settings, extra) => {
       return (
-        !settings["graph.dimensions"] ||
-        settings["graph.dimensions"].length < 2 ||
-        (extra?.transformedSeries ? extra.transformedSeries.length : 0) >
-          MAX_SERIES
+        (settings["graph.dimensions"]
+          ? settings["graph.dimensions"].length < 2
+          : false) || (extra?.transformedSeries?.length ?? 0) > MAX_SERIES
       );
     },
     dashboard: false,
@@ -223,16 +222,20 @@ export const GRAPH_DATA_SETTINGS: VisualizationSettingsDefinitions = {
         .filter(getDefaultMetricFilter(card.display))
         .map(getOptionFromColumn);
 
-      const hasBreakout =
-        vizSettings["graph.dimensions"] &&
-        vizSettings["graph.dimensions"].length > 1;
+      const addedMetrics = vizSettings["graph.metrics"];
+      const hasBreakout = vizSettings["graph.dimensions"]
+        ? vizSettings["graph.dimensions"].length > 1
+        : false;
+      const addedMetricsCount = addedMetrics?.length;
       const maxMetricsSupportedCount = getMaxMetricsSupported(card.display);
 
-      const addedMetrics = vizSettings["graph.metrics"];
-      const addedMetricsCount = addedMetrics?.length ?? 0;
-      const hasMetricsToAdd = options.length > addedMetricsCount;
+      const hasMetricsToAdd = addedMetricsCount
+        ? options.length > addedMetricsCount
+        : false;
       const canAddAnother =
-        addedMetricsCount < maxMetricsSupportedCount &&
+        (addedMetricsCount
+          ? addedMetricsCount < maxMetricsSupportedCount
+          : false) &&
         hasMetricsToAdd &&
         !hasBreakout &&
         addedMetrics?.every(metric => metric != null);
@@ -512,8 +515,11 @@ export const GRAPH_DISPLAY_VALUES_SETTINGS: VisualizationSettingsDefinitions = {
     hidden: true,
     getDefault: ([{ data }], settings) => {
       const [metricName] = settings["graph.metrics"] ?? [];
-      const metric = data.cols.find(col => col.name === metricName);
-      return metric?.aggregation_type ?? "sum";
+      return (
+        (metricName
+          ? data.cols.find(col => col.name === metricName)?.aggregation_type
+          : "sum") ?? "sum"
+      );
     },
     readDependencies: ["graph.metrics"],
   },
@@ -529,32 +535,30 @@ export const GRAPH_AXIS_SETTINGS: VisualizationSettingsDefinitions = {
     readDependencies: ["graph.dimensions"],
     getDefault: ([{ data }], vizSettings) => {
       const graphDimensions = vizSettings["graph.dimensions"];
-      if (!graphDimensions) {
-        return false;
-      }
-      return dimensionIsTimeseries(
-        data,
-        _.findIndex(
-          data.cols,
-          c => c.name === graphDimensions.filter(d => d)[0],
-        ),
-      );
+      return graphDimensions
+        ? dimensionIsTimeseries(
+            data,
+            _.findIndex(
+              data.cols,
+              c => c.name === graphDimensions.filter(d => d)[0],
+            ),
+          )
+        : false;
     },
   },
   "graph.x_axis._is_numeric": {
     readDependencies: ["graph.dimensions"],
     getDefault: ([{ data }], vizSettings) => {
       const graphDimensions = vizSettings["graph.dimensions"];
-      if (!graphDimensions) {
-        return false;
-      }
-      return dimensionIsNumeric(
-        data,
-        _.findIndex(
-          data.cols,
-          c => c.name === graphDimensions.filter(d => d)[0],
-        ),
-      );
+      return graphDimensions
+        ? dimensionIsNumeric(
+            data,
+            _.findIndex(
+              data.cols,
+              c => c.name === graphDimensions.filter(d => d)[0],
+            ),
+          )
+        : false;
     },
   },
   "graph.x_axis._is_histogram": {
@@ -729,12 +733,10 @@ export const GRAPH_AXIS_SETTINGS: VisualizationSettingsDefinitions = {
       // If there are multiple series, we check if the metric names match.
       // If they do, we use that as the default y axis label.
       const [metric] = vizSettings["graph.metrics"] ?? [];
-      const metricNames = series
-        .map(({ data: { cols } }) => {
-          const metricCol = cols.find(c => c.name === metric);
-          return metricCol && metricCol.display_name;
-        })
-        .filter((name): name is string => !!name);
+      const metricNames = series.map(({ data: { cols } }) => {
+        const metricCol = cols.find(c => c.name === metric);
+        return metricCol && metricCol.display_name;
+      });
 
       return getDefaultYAxisTitle(metricNames);
     },

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import _ from "underscore";
 
 import TippyPopover from "metabase/components/Popover/TippyPopover";
 
@@ -21,13 +22,7 @@ const ChartSettingsWidgetPopover = ({
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    sections.current = [
-      ...new Set(
-        widgets
-          .map(widget => widget.section)
-          .filter((section): section is string => !!section),
-      ),
-    ];
+    sections.current = _.chain(widgets).pluck("section").unique().value();
   }, [widgets]);
 
   const [currentSection, setCurrentSection] = useState("");
