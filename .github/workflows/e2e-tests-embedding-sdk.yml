@@ -49,7 +49,7 @@ jobs:
         id: dependencies
         with:
           script: | # js
-            const { getBuildRequirements, getMajorVersionNumberFromReleaseBranch } = require('${{ github.workspace }}/release/dist/index.cjs');
+            const { getBuildRequirements, getMajorVersionNumberFromReleaseBranch, getVersionFromReleaseBranch } = require('${{ github.workspace }}/release/dist/index.cjs');
 
             const targetBranchName = '${{ github.base_ref }}';
             const sdkVersion = targetBranchName === 'master' ? 'latest' : getMajorVersionNumberFromReleaseBranch(targetBranchName) + '-stable';
