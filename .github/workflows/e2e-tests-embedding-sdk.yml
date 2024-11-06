@@ -53,6 +53,7 @@ jobs:
 
             const targetBranchName = '${{ github.base_ref }}';
             const sdkVersion = targetBranchName === 'master' ? 'latest' : getMajorVersionNumberFromReleaseBranch(targetBranchName) + '-stable';
+            const version = getVersionFromReleaseBranch(targetBranchName);
             const requirements = getBuildRequirements(version);
 
             return {
