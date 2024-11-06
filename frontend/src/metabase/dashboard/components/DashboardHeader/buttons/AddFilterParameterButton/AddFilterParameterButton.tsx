@@ -38,6 +38,12 @@ export const AddFilterParameterButton = () => {
     }
   };
 
+  console.log(
+    "@m36afids",
+    "isAddParameterPopoverOpen",
+    isAddParameterPopoverOpen,
+  );
+
   return (
     <Menu
       opened={isAddParameterPopoverOpen}

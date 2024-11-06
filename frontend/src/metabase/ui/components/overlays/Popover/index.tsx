@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import ZIndex from "metabase/css/core/z-index.module.css";
 import useSequencedContentCloseHandler from "metabase/hooks/use-sequenced-content-close-handler";
 
-import { preventEagerPortal } from "../utils";
+import { withLazyPortal } from "../utils";
 
 export type { PopoverBaseProps, PopoverProps } from "@mantine/core";
 export { getPopoverOverrides } from "./Popover.styled";
@@ -20,7 +20,7 @@ type ExtendedPopoverDropdownProps = PopoverDropdownProps & {
 };
 
 const Popover = (props: PopoverProps) => (
-  <MantinePopover {...preventEagerPortal(props)} />
+  <MantinePopover {...withLazyPortal(props)} />
 );
 
 const PopoverDropdown = function PopoverDropdown(
