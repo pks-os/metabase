@@ -73,6 +73,8 @@ function Tooltip({
   maxWidth = 300,
   className,
 }: TooltipProps) {
+  console.log("@m368zdu8", "isOpen", isOpen);
+
   const visible = isOpen != null ? isOpen : undefined;
   const animationDuration = isReducedMotionPreferred() ? 0 : undefined;
   const disabled = isEnabled === false;
