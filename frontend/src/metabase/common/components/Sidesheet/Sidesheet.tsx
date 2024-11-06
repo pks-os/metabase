@@ -1,11 +1,11 @@
+import cx from "classnames";
 import type React from "react";
 import { t } from "ttag";
-import cx from "classnames";
 
+import Animation from "metabase/css/core/animation.module.css";
 import { Modal, Stack } from "metabase/ui";
 
 import Styles from "./sidesheet.module.css";
-import Animation from "metabase/css/core/animation.module.css";
 
 export type SidesheetSize = "xs" | "sm" | "md" | "lg" | "xl" | "auto";
 
@@ -17,7 +17,7 @@ interface SidesheetProps {
   children: React.ReactNode;
   /** use this if you want to enable interior scrolling of tab panels */
   removeBodyPadding?: boolean;
-  shouldShowOverlay?: boolean;
+  withOverlay?: boolean;
 }
 
 const sizes: Record<SidesheetSize, string> = {
@@ -36,11 +36,11 @@ export function Sidesheet({
   size = "sm",
   children,
   removeBodyPadding,
-  shouldShowOverlay = true,
+  withOverlay = true,
 }: SidesheetProps) {
   return (
     <Modal.Root opened={isOpen} onClose={onClose} h="100dvh">
-      {shouldShowOverlay && <Modal.Overlay data-testid="modal-overlay" />}
+      {withOverlay && <Modal.Overlay data-testid="modal-overlay" />}
       <Modal.Content
         transitionProps={{ duration: 0 }}
         px="none"
