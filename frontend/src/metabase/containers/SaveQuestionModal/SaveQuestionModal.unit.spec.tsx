@@ -724,7 +724,7 @@ describe("SaveQuestionModal", () => {
       screen.getByLabelText(/Where do you want to save this/);
     const newCollBtn = () =>
       screen.getByRole("button", {
-        name: /new dashboard/i,
+        name: /new collection/i,
       });
     const questionModalTitle = () =>
       screen.getByRole("heading", { name: /new question/i });
@@ -831,7 +831,7 @@ describe("SaveQuestionModal", () => {
         await waitFor(async () =>
           expect(
             await screen.findByRole("heading", {
-              name: "Create a new dashboard",
+              name: "Create a new collection",
             }),
           ).toBeInTheDocument(),
         );
