@@ -373,9 +373,9 @@ export function getDefaultBubbleSizeCol(data: DatasetData) {
 }
 
 export function getDefaultColumns(series: RawSeries): {
-  dimensions: (DatasetColumn["name"] | null)[];
-  metrics: (DatasetColumn["name"] | null)[];
-  bubble?: DatasetColumn["name"] | null;
+  dimensions: (string | null)[];
+  metrics: (string | null)[];
+  bubble?: string | null;
 } {
   if (series[0].card.display === "scatter") {
     return getDefaultScatterColumns(series[0].data);

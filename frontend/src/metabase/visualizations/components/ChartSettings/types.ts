@@ -19,8 +19,11 @@ export type Widget<
   marginBottom: string;
   disabled: boolean;
   set: boolean;
-  onChange: never;
-  onChangeSettings: never;
+  onChange: (value: VisualizationSettings[K], question: Question) => void;
+  onChangeSettings: (
+    settings: VisualizationSettings,
+    question: Question,
+  ) => void;
 } & Omit<
   VisualizationSettingDefinition<K>,
   | "id"

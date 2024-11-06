@@ -515,11 +515,8 @@ export const GRAPH_DISPLAY_VALUES_SETTINGS: VisualizationSettingsDefinitions = {
     hidden: true,
     getDefault: ([{ data }], settings) => {
       const [metricName] = settings["graph.metrics"] ?? [];
-      return (
-        (metricName
-          ? data.cols.find(col => col.name === metricName)?.aggregation_type
-          : "sum") ?? "sum"
-      );
+      const metric = data.cols.find(col => col.name === metricName);
+      return metric?.aggregation_type ?? "sum";
     },
     readDependencies: ["graph.metrics"],
   },
@@ -535,30 +532,32 @@ export const GRAPH_AXIS_SETTINGS: VisualizationSettingsDefinitions = {
     readDependencies: ["graph.dimensions"],
     getDefault: ([{ data }], vizSettings) => {
       const graphDimensions = vizSettings["graph.dimensions"];
-      return graphDimensions
-        ? dimensionIsTimeseries(
-            data,
-            _.findIndex(
-              data.cols,
-              c => c.name === graphDimensions.filter(d => d)[0],
-            ),
-          )
-        : false;
+      if (!graphDimensions) {
+        return false;
+      }
+      return dimensionIsTimeseries(
+        data,
+        _.findIndex(
+          data.cols,
+          c => c.name === graphDimensions.filter(d => d)[0],
+        ),
+      );
     },
   },
   "graph.x_axis._is_numeric": {
     readDependencies: ["graph.dimensions"],
     getDefault: ([{ data }], vizSettings) => {
       const graphDimensions = vizSettings["graph.dimensions"];
-      return graphDimensions
-        ? dimensionIsNumeric(
-            data,
-            _.findIndex(
-              data.cols,
-              c => c.name === graphDimensions.filter(d => d)[0],
-            ),
-          )
-        : false;
+      if (!graphDimensions) {
+        return false;
+      }
+      return dimensionIsNumeric(
+        data,
+        _.findIndex(
+          data.cols,
+          c => c.name === graphDimensions.filter(d => d)[0],
+        ),
+      );
     },
   },
   "graph.x_axis._is_histogram": {
