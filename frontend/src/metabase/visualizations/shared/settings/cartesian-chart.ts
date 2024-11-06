@@ -77,7 +77,7 @@ export function getDefaultDimensions(
 export function getDefaultMetrics(
   rawSeries: RawSeries,
   settings: ComputedVisualizationSettings,
-) {
+): (string | null)[] {
   const [{ card }] = rawSeries;
   const prevMetrics = settings["graph.metrics"] ?? [];
   const defaultMetrics = getDefaultColumns(rawSeries).metrics;
