@@ -8,16 +8,13 @@ import {
   setTokenFeatures,
   visitFullAppEmbeddingUrl,
 } from "e2e/support/helpers";
-import {
-  EMBEDDING_SDK_STORY_HOST,
-  describeSDK,
-} from "e2e/support/helpers/e2e-embedding-sdk-helpers";
+import { EMBEDDING_SDK_STORY_HOST } from "e2e/support/helpers/e2e-embedding-sdk-helpers";
 import {
   JWT_SHARED_SECRET,
   setupJwt,
 } from "e2e/support/helpers/e2e-jwt-helpers";
 
-describeSDK("scenarios > embedding-sdk > static-dashboard", () => {
+describe("scenarios > embedding-sdk > static-dashboard", () => {
   beforeEach(() => {
     restore();
     cy.signInAsAdmin();

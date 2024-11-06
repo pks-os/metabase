@@ -6,10 +6,7 @@ import {
   updateSetting,
   visitFullAppEmbeddingUrl,
 } from "e2e/support/helpers";
-import {
-  EMBEDDING_SDK_STORY_HOST,
-  describeSDK,
-} from "e2e/support/helpers/e2e-embedding-sdk-helpers";
+import { EMBEDDING_SDK_STORY_HOST } from "e2e/support/helpers/e2e-embedding-sdk-helpers";
 import {
   JWT_SHARED_SECRET,
   setupJwt,
@@ -23,7 +20,7 @@ const STORIES = {
     "embeddingsdk-styles-tests--get-browser-default-font",
 } as const;
 
-describeSDK("scenarios > embedding-sdk > static-dashboard", () => {
+describe("scenarios > embedding-sdk > static-dashboard", () => {
   beforeEach(() => {
     restore();
     cy.signInAsAdmin();

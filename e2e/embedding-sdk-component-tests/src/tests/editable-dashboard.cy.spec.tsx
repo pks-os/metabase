@@ -1,18 +1,16 @@
 import {
-  restore,
-  setTokenFeatures,
-  visitFullAppEmbeddingUrl,
-} from "e2e/support/helpers";
-import {
-  EMBEDDING_SDK_STORY_HOST,
-  describeSDK,
-} from "e2e/support/helpers/e2e-embedding-sdk-helpers";
-import {
-  JWT_SHARED_SECRET,
-  setupJwt,
-} from "e2e/support/helpers/e2e-jwt-helpers";
+  EditableDashboard,
+  MetabaseProvider,
+} from "@metabase/embedding-sdk-react"; // eslint-disable-line import/no-unresolved
 
-describeSDK("scenarios > embedding-sdk > editable-dashboard", () => {
+import {
+  JWT_PROVIDER_URL,
+  METABASE_INSTANCE_URL,
+} from "e2e/embedding-sdk-component-tests/src/utils/sdk-mocks";
+import { restore, setTokenFeatures } from "e2e/support/helpers";
+import { setupJwt } from "e2e/support/helpers/e2e-jwt-helpers";
+
+describe("scenarios > embedding-sdk > editable-dashboard", () => {
   beforeEach(() => {
     restore();
     cy.signInAsAdmin();
@@ -40,18 +38,16 @@ describeSDK("scenarios > embedding-sdk > editable-dashboard", () => {
 
   it("Should not open sidesheet when clicking last edit info (metabase#48354)", () => {
     cy.get("@dashboardId").then(dashboardId => {
-      visitFullAppEmbeddingUrl({
-        url: EMBEDDING_SDK_STORY_HOST,
-        qs: {
-          id: "embeddingsdk-editabledashboard--default",
-          viewMode: "story",
-        },
-        onBeforeLoad: window => {
-          window.JWT_SHARED_SECRET = JWT_SHARED_SECRET;
-          window.METABASE_INSTANCE_URL = Cypress.config().baseUrl;
-          window.DASHBOARD_ID = dashboardId;
-        },
-      });
+      cy.mount(
+        <MetabaseProvider
+          config={{
+            jwtProviderUri: JWT_PROVIDER_URL,
+            metabaseInstanceUrl: METABASE_INSTANCE_URL,
+          }}
+        >
+          <EditableDashboard dashboardId={dashboardId} />
+        </MetabaseProvider>,
+      );
     });
 
     cy.get("#metabase-sdk-root")

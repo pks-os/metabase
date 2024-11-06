@@ -5,7 +5,7 @@ module.exports = {
     viewportHeight: 800,
     viewportWidth: 1280,
     video: false,
-    specPattern: "**/*.cy.spec.{js,ts}",
+    specPattern: "**/*.cy.spec.{js,ts,jsx,tsx}",
 
     devServer: {
       framework: "react",

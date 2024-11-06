@@ -7,8 +7,7 @@ const webpack = require("webpack");
 const { isEmbeddingSdkPackageInstalled } = resolveEmbeddingSdkPackage();
 
 module.exports = {
-  mode: "development",
-  stats: "verbose",
+  mode: "production",
   resolve: {
     alias: {
       ...(!isEmbeddingSdkPackageInstalled

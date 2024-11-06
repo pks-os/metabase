@@ -1,3 +1,8 @@
+import {
+  InteractiveQuestion,
+  MetabaseProvider,
+} from "@metabase/embedding-sdk-react"; // eslint-disable-line import/no-unresolved
+
 import { SAMPLE_DATABASE } from "e2e/support/cypress_sample_database";
 import {
   FIRST_COLLECTION_ID,
@@ -11,16 +16,14 @@ import {
   tableHeaderClick,
   tableInteractive,
 } from "e2e/support/helpers";
-import { describeSDK } from "e2e/support/helpers/e2e-embedding-sdk-helpers";
 import { setupJwt } from "e2e/support/helpers/e2e-jwt-helpers";
-import {
-  saveInteractiveQuestionAsNewQuestion,
-  visitInteractiveQuestionStory,
-} from "e2e/test/scenarios/embedding-sdk/helpers/save-interactive-question-e2e-helpers";
+
+import { saveInteractiveQuestionAsNewQuestion } from "../helpers/save-interactive-question-e2e-helpers";
+import { JWT_PROVIDER_URL, METABASE_INSTANCE_URL } from "../utils/sdk-mocks";
 
 const { ORDERS, ORDERS_ID } = SAMPLE_DATABASE;
 
-describeSDK("scenarios > embedding-sdk > interactive-question", () => {
+describe("scenarios > embedding-sdk > interactive-question", () => {
   beforeEach(() => {
     restore();
     cy.signInAsAdmin();
@@ -49,7 +52,18 @@ describeSDK("scenarios > embedding-sdk > interactive-question", () => {
     cy.intercept("GET", "/api/user/current").as("getUser");
     cy.intercept("POST", "/api/card/*/query").as("cardQuery");
 
-    visitInteractiveQuestionStory();
+    cy.get("@questionId").then(questionId => {
+      cy.mount(
+        <MetabaseProvider
+          config={{
+            jwtProviderUri: JWT_PROVIDER_URL,
+            metabaseInstanceUrl: METABASE_INSTANCE_URL,
+          }}
+        >
+          <InteractiveQuestion questionId={questionId} />
+        </MetabaseProvider>,
+      );
+    });
 
     cy.wait("@getUser").then(({ response }) => {
       expect(response?.statusCode).to.equal(200);
@@ -133,8 +147,20 @@ describeSDK("scenarios > embedding-sdk > interactive-question", () => {
   });
 
   it("can save a question to a pre-defined collection", () => {
-    visitInteractiveQuestionStory({
-      saveToCollectionId: Number(THIRD_COLLECTION_ID),
+    cy.get("@questionId").then(questionId => {
+      cy.mount(
+        <MetabaseProvider
+          config={{
+            jwtProviderUri: JWT_PROVIDER_URL,
+            metabaseInstanceUrl: METABASE_INSTANCE_URL,
+          }}
+        >
+          <InteractiveQuestion
+            questionId={questionId}
+            saveToCollectionId={Number(THIRD_COLLECTION_ID)}
+          />
+        </MetabaseProvider>,
+      );
     });
 
     saveInteractiveQuestionAsNewQuestion({

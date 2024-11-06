@@ -142,7 +142,7 @@ module.exports = {
     "plugin:import/warnings",
     "plugin:import/typescript",
     "plugin:depend/recommended",
-    "plugin:storybook/recommended"
+    "plugin:storybook/recommended",
   ],
   settings: {
     "import/internal-regex": "^metabase/|^metabase-lib/",
@@ -197,6 +197,33 @@ module.exports = {
       rules: {
         "no-unconditional-metabase-links-render": "off",
         "no-literal-metabase-strings": "off",
+        "no-restricted-imports": [
+          "error",
+          {
+            paths: [
+              {
+                name: "moment",
+                message: "Moment is deprecated, please use dayjs",
+              },
+              {
+                name: "moment-timezone",
+                message: "Moment is deprecated, please use dayjs",
+              },
+              {
+                name: "enterprise/frontend/src/embedding-sdk",
+                message:
+                  "Please use SDK package name - '@metabase/embedding-sdk-react'",
+              },
+            ],
+            patterns: [
+              {
+                group: ["**/enterprise/frontend/src/embedding-sdk"],
+                message:
+                  "Please use SDK package name - '@metabase/embedding-sdk-react'",
+              },
+            ],
+          },
+        ],
       },
     },
     {
