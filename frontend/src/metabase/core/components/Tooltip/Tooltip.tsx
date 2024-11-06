@@ -73,8 +73,6 @@ function Tooltip({
   maxWidth = 300,
   className,
 }: TooltipProps) {
-  console.log("@m368zdu8", "isOpen", isOpen);
-
   const visible = isOpen != null ? isOpen : undefined;
   const animationDuration = isReducedMotionPreferred() ? 0 : undefined;
   const disabled = isEnabled === false;
@@ -103,21 +101,11 @@ function Tooltip({
 
   const zIndex = "var(--mb-floating-element-z-index)" as unknown as number;
 
-  // FIXME: Cypress can't find popovers, and I think it's because they don't have
-  // data-state=visible. I'm not sure why. But perhaps we can add that
-  // attribute here explicitly. Or, better, perhaps we can only display it when
-  // the popover really is visible.
-  //
-  // It's also possible that the popover isn't receiving the class 'popover'
-  // somehow, maybe.
-  console.log("@m35avl80", "visible", visible);
-
   if (tooltip && targetProps) {
     return (
       <TippyComponent
         theme={theme}
         className={cx("popover", ZIndex.FloatingElement, className)}
-        //zIndex={zIndex}
         zIndex={zIndex}
         appendTo={appendTo}
         content={tooltip}

@@ -1,12 +1,11 @@
 import cx from "classnames";
 
-import ZIndex from "metabase/css/core/z-index.module.css";
 import Animation from "metabase/css/core/animation.module.css";
+import ZIndex from "metabase/css/core/z-index.module.css";
 import { useSelector } from "metabase/lib/redux";
 import { getIsNavbarOpen } from "metabase/selectors/app";
 import { Box, type BoxProps, Flex, Portal, Text } from "metabase/ui";
 
-import S from "./BulkActionBar.module.css";
 import { BulkActionsToast, ToastCard } from "./BulkActionBar.styled";
 
 type BulkActionsProps = {
