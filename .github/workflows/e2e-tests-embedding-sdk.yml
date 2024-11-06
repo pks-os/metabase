@@ -32,7 +32,6 @@ jobs:
   get-build-requirements:
     if: |
       !cancelled()
-#      && contains(github.ref, 'release-x')
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     outputs:
@@ -50,9 +49,10 @@ jobs:
         id: dependencies
         with:
           script: | # js
-            const { getBuildRequirements, getVersionFromReleaseBranch } = require('${{ github.workspace }}/release/dist/index.cjs');
+            const { getBuildRequirements, getMajorVersionNumberFromReleaseBranch } = require('${{ github.workspace }}/release/dist/index.cjs');
 
-            const sdkVersion = '${{ github.ref }}' === 'master' ? 'latest' : getMajorVersionNumberFromReleaseBranch('${{ github.ref }}') + '-stable';
+            const targetBranchName = '${{ github.base_ref }}';
+            const sdkVersion = targetBranchName === 'master' ? 'latest' : getMajorVersionNumberFromReleaseBranch(targetBranchName) + '-stable';
             const requirements = getBuildRequirements(version);
 
             return {
