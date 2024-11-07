@@ -6,7 +6,7 @@ import {
   InteractiveQuestionProviderWithLocation,
   type QuestionMockLocationParameters,
 } from "./InteractiveQuestion/context";
-import { InteractiveQuestionResult } from "./InteractiveQuestionResult";
+import { InteractiveQuestionDefaultView } from "./InteractiveQuestionResult";
 
 interface InteractiveAdHocQuestionProps {
   questionPath: string; // route path to load a question, e.g. /question/140-best-selling-products - for saved, or /question/xxxxxxx for ad-hoc encoded question config
@@ -36,7 +36,7 @@ export const InteractiveAdHocQuestion = ({
       componentPlugins={plugins}
       onNavigateBack={onNavigateBack}
     >
-      <InteractiveQuestionResult height={height} withTitle={withTitle} />
+      <InteractiveQuestionDefaultView height={height} withTitle={withTitle} />
     </InteractiveQuestionProviderWithLocation>
   );
 };

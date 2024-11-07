@@ -31,7 +31,7 @@ const SummarizeInner = ({
   const { updateQuestion } = useInteractiveQuestionContext();
 
   const onQueryChange = (query: Lib.Query) =>
-    updateQuestion(question.setQuery(query));
+    updateQuestion(question.setQuery(query), { run: true });
 
   // save initial question in case we close without making changes
   const initialQuestion = useRef(question.query());

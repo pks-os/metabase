@@ -1,1 +1,1 @@
-export * from "./InteractiveQuestionResult";
+export * from "./InteractiveQuestionDefaultView";

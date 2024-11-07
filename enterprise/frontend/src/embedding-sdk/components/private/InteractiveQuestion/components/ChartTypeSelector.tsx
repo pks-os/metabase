@@ -34,8 +34,10 @@ export const useChartTypeSelectors = () => {
 
 export const ChartTypeSelector = ({
   onChange,
+  onOpenSettings,
 }: {
   onChange?: (display: CardDisplayType) => void;
+  onOpenSettings?: () => void;
 }) => {
   const {
     selectedVisualization,
@@ -57,6 +59,7 @@ export const ChartTypeSelector = ({
         onChange?.(display);
         updateQuestionVisualization(display);
       }}
+      onOpenSettings={onOpenSettings}
     />
   );
 };

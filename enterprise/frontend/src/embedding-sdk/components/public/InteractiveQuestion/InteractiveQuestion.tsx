@@ -23,7 +23,7 @@ import {
   type InteractiveQuestionProviderProps,
 } from "embedding-sdk/components/private/InteractiveQuestion/context";
 import {
-  InteractiveQuestionResult,
+  InteractiveQuestionDefaultView,
   type InteractiveQuestionResultProps,
 } from "embedding-sdk/components/private/InteractiveQuestionResult";
 import { withPublicComponentWrapper } from "embedding-sdk/components/private/PublicComponentWrapper";
@@ -65,7 +65,7 @@ export const _InteractiveQuestion = ({
     entityTypeFilter={entityTypeFilter}
   >
     {children ?? (
-      <InteractiveQuestionResult
+      <InteractiveQuestionDefaultView
         height={height}
         width={width}
         className={className}

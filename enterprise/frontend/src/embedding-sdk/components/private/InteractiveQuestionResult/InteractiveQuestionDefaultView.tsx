@@ -47,7 +47,7 @@ const ContentView = ({
     ))
     .otherwise(() => <InteractiveQuestion.QuestionVisualization />);
 
-export const InteractiveQuestionResult = ({
+export const InteractiveQuestionDefaultView = ({
   height,
   width,
   className,
