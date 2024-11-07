@@ -102,7 +102,7 @@ type SyncColumnsOpts<T> = {
   settings: T[];
   newColumns: ColumnInfo[];
   oldColumns: ColumnInfo[];
-  getColumnName: (setting: T) => string | null;
+  getColumnName: (setting: T) => string | undefined;
   setColumnName: (setting: T, newName: string) => T;
   createSetting: (column: ColumnInfo) => T;
   shouldCreateSetting?: (column: ColumnInfo) => boolean | undefined;
@@ -232,7 +232,7 @@ function syncGraphMetrics(
   return {
     ...settings,
     "graph.metrics": syncColumnNames({
-      settings: graphMetrics,
+      settings: graphMetrics.filter((metric): metric is string => !!metric),
       newColumns,
       oldColumns,
       shouldCreateSetting: column => column.isAggregation,

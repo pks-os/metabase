@@ -64,7 +64,7 @@ const ChartSettingsWidget = ({
         <Title
           variant={variant}
           className={cx({ [FormS.FormLabel]: isFormField })}
-          htmlFor={String(extraWidgetProps.id)}
+          htmlFor={extraWidgetProps.id}
         >
           {title}
           {hint && (

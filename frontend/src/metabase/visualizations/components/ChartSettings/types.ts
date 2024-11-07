@@ -9,7 +9,7 @@ import type { Series, VisualizationSettings } from "metabase-types/api";
 
 export type Widget<
   K extends keyof VisualizationSettings = keyof VisualizationSettings,
-  Widget extends ComponentType<any> = ComponentType<any>,
+  SettingsWidget extends ComponentType<any> = ComponentType<any>,
 > = {
   id: K;
   value: VisualizationSettings[K];
@@ -37,8 +37,8 @@ export type Widget<
   | "set"
   | "widget"
 > &
-  (Widget extends ComponentType<infer P>
-    ? WidgetComponentDef<Widget, P, VisualizationSettings[K]>
+  (SettingsWidget extends ComponentType<infer P>
+    ? WidgetComponentDef<SettingsWidget, P, VisualizationSettings[K]>
     : never);
 
 export type CommonChartSettingsProps = {

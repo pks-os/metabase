@@ -223,19 +223,15 @@ export const GRAPH_DATA_SETTINGS: VisualizationSettingsDefinitions = {
         .map(getOptionFromColumn);
 
       const addedMetrics = vizSettings["graph.metrics"];
-      const hasBreakout = vizSettings["graph.dimensions"]
-        ? vizSettings["graph.dimensions"].length > 1
-        : false;
-      const addedMetricsCount = addedMetrics?.length;
+      const hasBreakout =
+        vizSettings["graph.dimensions"] &&
+        vizSettings["graph.dimensions"].length > 1;
+      const addedMetricsCount = addedMetrics?.length ?? 0;
       const maxMetricsSupportedCount = getMaxMetricsSupported(card.display);
 
-      const hasMetricsToAdd = addedMetricsCount
-        ? options.length > addedMetricsCount
-        : false;
+      const hasMetricsToAdd = options.length > addedMetricsCount;
       const canAddAnother =
-        (addedMetricsCount
-          ? addedMetricsCount < maxMetricsSupportedCount
-          : false) &&
+        addedMetricsCount < maxMetricsSupportedCount &&
         hasMetricsToAdd &&
         !hasBreakout &&
         addedMetrics?.every(metric => metric != null);

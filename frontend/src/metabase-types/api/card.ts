@@ -262,9 +262,8 @@ export type VisualizationSettings = {
   "pie.decimal_places"?: number;
   "pie.slice_threshold"?: number;
   "pie.colors"?: Record<string, string>;
-
-  [key: string]: any;
-} & EmbedVisualizationSettings;
+} & EmbedVisualizationSettings &
+  Record<string, any>;
 
 export type EmbedVisualizationSettings = {
   iframe?: string;
