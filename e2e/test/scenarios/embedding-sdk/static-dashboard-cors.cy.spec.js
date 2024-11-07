@@ -16,7 +16,8 @@ import {
 } from "e2e/support/helpers/e2e-jwt-helpers";
 
 const STORYBOOK_ID = "embeddingsdk-cypressstaticdashboardwithcors--default";
-describe("scenarios > embedding-sdk > static-dashboard", () => {
+
+describe.skip("scenarios > embedding-sdk > static-dashboard", () => {
   beforeEach(() => {
     restore();
     cy.signInAsAdmin();

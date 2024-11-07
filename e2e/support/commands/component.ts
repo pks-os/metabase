@@ -1,6 +1,5 @@
-import "@testing-library/cypress/add-commands";
-
 import type { MountOptions, MountReturn } from "cypress/react";
+import { mount } from "cypress/react18";
 
 declare global {
   namespace Cypress {
@@ -17,3 +16,5 @@ declare global {
     }
   }
 }
+
+Cypress.Commands.add("mount", mount); // used for Cypress Component Testing - https://docs.cypress.io/app/component-testing

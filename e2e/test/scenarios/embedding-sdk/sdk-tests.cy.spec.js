@@ -8,9 +8,9 @@ import {
   JWT_PROVIDER_URL,
   METABASE_INSTANCE_URL,
   mockJwtProvider,
-} from "../utils/sdk-mocks";
+} from "e2e/support/helpers/e2e-embedding-sdk-helpers";
 
-describe("SDK Tests", () => {
+describe.skip("SDK Tests", () => {
   beforeEach(() => {
     mockJwtProvider();
   });

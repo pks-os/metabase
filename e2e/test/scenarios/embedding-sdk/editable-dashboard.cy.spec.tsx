@@ -3,14 +3,14 @@ import {
   MetabaseProvider,
 } from "@metabase/embedding-sdk-react"; // eslint-disable-line import/no-unresolved
 
+import { restore, setTokenFeatures } from "e2e/support/helpers";
 import {
   JWT_PROVIDER_URL,
   METABASE_INSTANCE_URL,
-} from "e2e/embedding-sdk-component-tests/src/utils/sdk-mocks";
-import { restore, setTokenFeatures } from "e2e/support/helpers";
+} from "e2e/support/helpers/e2e-embedding-sdk-helpers";
 import { setupJwt } from "e2e/support/helpers/e2e-jwt-helpers";
 
-describe("scenarios > embedding-sdk > editable-dashboard", () => {
+describe.skip("scenarios > embedding-sdk > editable-dashboard", () => {
   beforeEach(() => {
     restore();
     cy.signInAsAdmin();

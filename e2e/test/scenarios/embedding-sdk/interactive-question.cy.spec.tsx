@@ -16,10 +16,13 @@ import {
   tableHeaderClick,
   tableInteractive,
 } from "e2e/support/helpers";
+import {
+  JWT_PROVIDER_URL,
+  METABASE_INSTANCE_URL,
+} from "e2e/support/helpers/e2e-embedding-sdk-helpers";
 import { setupJwt } from "e2e/support/helpers/e2e-jwt-helpers";
 
-import { saveInteractiveQuestionAsNewQuestion } from "../helpers/save-interactive-question-e2e-helpers";
-import { JWT_PROVIDER_URL, METABASE_INSTANCE_URL } from "../utils/sdk-mocks";
+import { saveInteractiveQuestionAsNewQuestion } from "../../../support/helpers/e2e-embedding-sdk-interactive-question-helpers";
 
 const { ORDERS, ORDERS_ID } = SAMPLE_DATABASE;
 

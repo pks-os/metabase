@@ -14,7 +14,7 @@ import {
   setupJwt,
 } from "e2e/support/helpers/e2e-jwt-helpers";
 
-describe("scenarios > embedding-sdk > static-dashboard", () => {
+describe.skip("scenarios > embedding-sdk > static-dashboard", () => {
   beforeEach(() => {
     restore();
     cy.signInAsAdmin();

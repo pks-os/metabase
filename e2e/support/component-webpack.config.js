@@ -4,12 +4,16 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const webpack = require("webpack");
 
+const mainConfig = require("../../webpack.config");
+
 const { isEmbeddingSdkPackageInstalled } = resolveEmbeddingSdkPackage();
 
 module.exports = {
-  mode: "production",
+  mode: "development",
+  devtool: false,
   resolve: {
     alias: {
+      ...mainConfig.resolve.alias,
       ...(!isEmbeddingSdkPackageInstalled
         ? {
             "@metabase/embedding-sdk-react": path.resolve(
@@ -24,7 +28,6 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
   },
-  devtool: false,
   module: {
     rules: [
       {
@@ -32,12 +35,16 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.?js$/,
+        test: /\.(tsx?|jsx?)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+              "@babel/preset-typescript",
+            ],
           },
         },
       },

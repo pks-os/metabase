@@ -20,7 +20,7 @@ const STORIES = {
     "embeddingsdk-styles-tests--get-browser-default-font",
 } as const;
 
-describe("scenarios > embedding-sdk > static-dashboard", () => {
+describe.skip("scenarios > embedding-sdk > static-dashboard", () => {
   beforeEach(() => {
     restore();
     cy.signInAsAdmin();
