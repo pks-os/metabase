@@ -1,6 +1,5 @@
 import type { EmbeddingParameters } from "metabase/public/lib/types";
 import type { PieRow } from "metabase/visualizations/echarts/pie/model/types";
-import type { AggregationType } from "metabase-types/api/dataset";
 
 import type { Collection, CollectionId, LastEditInfo } from "./collection";
 import type { DashCardId, DashboardId } from "./dashboard";
@@ -183,7 +182,13 @@ export type VisualizationSettings = {
   "graph.show_stack_values"?: StackValuesDisplay;
   "graph.max_categories_enabled"?: boolean;
   "graph.max_categories"?: number;
-  "graph.other_category_aggregation_fn"?: AggregationType;
+  "graph.other_category_aggregation_fn"?:
+    | "sum"
+    | "avg"
+    | "min"
+    | "max"
+    | "stddev"
+    | "median";
 
   // Table
   "table.columns"?: TableColumnOrderSetting[];

@@ -33,10 +33,10 @@ export const ChartSettingMaxCategories = ({
   );
 
   const handleAggregationFunctionChange = useCallback(
-    (value: string | null) => {
+    (value: AggregationFunction) => {
       if (value) {
         onChangeSettings({
-          "graph.other_category_aggregation_fn": value as AggregationFunction,
+          "graph.other_category_aggregation_fn": value,
         });
       }
     },
@@ -75,11 +75,12 @@ export const ChartSettingMaxCategories = ({
   );
 };
 
-const AGGREGATION_FN_OPTIONS = [
-  { label: t`Sum`, value: "sum" },
-  { label: t`Average`, value: "avg" },
-  { label: t`Median`, value: "median" },
-  { label: t`Standard deviation`, value: "stddev" },
-  { label: t`Min`, value: "min" },
-  { label: t`Max`, value: "max" },
-];
+const AGGREGATION_FN_OPTIONS: { label: string; value: AggregationFunction }[] =
+  [
+    { label: t`Sum`, value: "sum" },
+    { label: t`Average`, value: "avg" },
+    { label: t`Median`, value: "median" },
+    { label: t`Standard deviation`, value: "stddev" },
+    { label: t`Min`, value: "min" },
+    { label: t`Max`, value: "max" },
+  ];
