@@ -401,7 +401,6 @@
           (throw (ex-info (format "Test failed after running: `%s`" test)
                           {:test test})))))))
 
-
 (defn setup-email!
   "Set up email settings for sending emails from Metabase. This is useful for testing email sending in the REPL."
   [& settings]
