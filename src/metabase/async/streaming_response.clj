@@ -226,7 +226,13 @@
     (try
       (.setStatus response (or status 202))
       (let [gzip?   (should-gzip-response? request-map)
-            headers (cond-> (assoc (merge headers (:headers response-map)) "Content-Type" content-type)
+            headers (cond-> (assoc (merge headers (:headers response-map))
+                                   "Content-Type" content-type
+                                   ;; Very important: connections that server streaming responses SHOULD NOT be reused
+                                   ;; by the client because of `start-async-cancel-loop!`. The latter tries to read a
+                                   ;; byte from the input stream at some interval, and that may/does cause corruption
+                                   ;; of the following requests that come through the reused connection (see #46071).
+                                   "Connection" "close")
                       gzip? (assoc "Content-Encoding" "gzip"))]
         (#'servlet/set-headers response headers)
         (let [output-stream-delay (output-stream-delay gzip? response)
