@@ -15,7 +15,6 @@ import {
   screen,
   waitForLoaderToBeRemoved,
 } from "__support__/ui";
-import { InteractiveQuestionDefaultView } from "embedding-sdk/components/private/InteractiveQuestionResult";
 import { createMockJwtConfig } from "embedding-sdk/test/mocks/config";
 import { setupSdkState } from "embedding-sdk/test/server-mocks/sdk-init";
 import {
@@ -30,6 +29,7 @@ import {
 } from "metabase-types/api/mocks";
 
 import { useInteractiveQuestionContext } from "../../private/InteractiveQuestion/context";
+import { InteractiveQuestionDefaultView } from "../../private/InteractiveQuestionDefaultView";
 
 import { InteractiveQuestion } from "./InteractiveQuestion";
 

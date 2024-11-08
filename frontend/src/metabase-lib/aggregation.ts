@@ -24,7 +24,7 @@ export function aggregationOperatorColumns(
 
 export function selectedAggregationOperators(
   operators: AggregationOperator[],
-  clause: AggregationClause,
+  clause?: AggregationClause,
 ): AggregationOperator[] {
   return ML.selected_aggregation_operators(operators, clause);
 }

@@ -1,16 +1,15 @@
 import { useRef, useState } from "react";
 import { t } from "ttag";
 
-import { useInteractiveQuestionContext } from "embedding-sdk/components/private/InteractiveQuestion/context";
+import { AggregationPicker as BaseAggregationPicker } from "metabase/common/components/AggregationPicker";
 import CS from "metabase/css/core/index.css";
-import {
-  SummarizeAggregationItemList,
-  SummarizeBreakoutColumnList,
-  useSummarizeQuery,
-} from "metabase/query_builder/components/view/sidebars/SummarizeSidebar/SummarizeContent";
-import { Button, Divider, Group, Stack } from "metabase/ui";
-import type * as Lib from "metabase-lib";
+import { RemoveIcon } from "metabase/query_builder/components/view/sidebars/SummarizeSidebar/AggregationItem/AggregationItem.styled";
+import { useSummarizeQuery } from "metabase/query_builder/components/view/sidebars/SummarizeSidebar/SummarizeContent";
+import { Button, Group, Icon, ScrollArea, Stack } from "metabase/ui";
+import * as Lib from "metabase-lib";
 import type Question from "metabase-lib/v1/Question";
+
+import { useInteractiveQuestionContext } from "../context";
 
 type SummarizeProps = {
   onClose: () => void;
@@ -20,6 +19,37 @@ export const Summarize = ({ onClose = () => {} }: Partial<SummarizeProps>) => {
   const { question } = useInteractiveQuestionContext();
 
   return question && <SummarizeInner question={question} onClose={onClose} />;
+};
+
+const SummarizeInnerItem = ({
+  query,
+  stageIndex,
+  aggregation,
+  aggregationIndex,
+  onQueryChange,
+}: {
+  query: Lib.Query;
+  stageIndex: number;
+  aggregation?: Lib.AggregationClause;
+  aggregationIndex?: number;
+  onQueryChange: (query: Lib.Query) => void;
+}) => {
+  const operators = Lib.selectedAggregationOperators(
+    Lib.availableAggregationOperators(query, stageIndex),
+    aggregation,
+  );
+
+  return (
+    <BaseAggregationPicker
+      query={query}
+      stageIndex={stageIndex}
+      clause={aggregation}
+      clauseIndex={aggregationIndex}
+      operators={operators}
+      allowTemporalComparisons
+      onQueryChange={onQueryChange}
+    />
+  );
 };
 
 const SummarizeInner = ({
@@ -38,6 +68,12 @@ const SummarizeInner = ({
 
   const [currentQuery, setCurrentQuery] = useState<Lib.Query>(question.query());
 
+  const { query, stageIndex, aggregations, handleQueryChange } =
+    useSummarizeQuery({
+      query: currentQuery,
+      onQueryChange: setCurrentQuery,
+    });
+
   const onApplyFilter = () => {
     if (query) {
       onQueryChange(currentQuery);
@@ -52,42 +88,76 @@ const SummarizeInner = ({
     onClose();
   };
 
-  const {
-    query,
-    stageIndex,
-    aggregations,
-    handleAddBreakout,
-    handleQueryChange,
-    handleRemoveBreakout,
-    handleReplaceBreakouts,
-    handleUpdateBreakout,
-    hasAggregations,
-  } = useSummarizeQuery({
-    query: currentQuery,
-    onQueryChange: setCurrentQuery,
+  const [currentAggregation, setCurrentAggregation] = useState<{
+    aggregation?: Lib.AggregationClause;
+    aggregationIndex?: number;
+  }>({
+    aggregation: undefined,
+    aggregationIndex: undefined,
   });
 
   return (
-    <Stack className={CS.overflowHidden} h="100%" w="100%">
-      <Stack className={CS.overflowYScroll}>
-        <SummarizeAggregationItemList
+    <Stack className={CS.overflowHidden} h="100%">
+      <Stack spacing="xs">
+        {aggregations.map((aggregation, aggregationIndex) => {
+          const { displayName } = Lib.displayInfo(
+            query,
+            stageIndex,
+            aggregation,
+          );
+
+          const handleRemove = () => {
+            const nextQuery = Lib.removeClause(query, stageIndex, aggregation);
+            handleQueryChange(nextQuery);
+          };
+          return (
+            <Group key={displayName}>
+              <Button
+                variant={
+                  aggregationIndex === currentAggregation.aggregationIndex
+                    ? "filled"
+                    : "default"
+                }
+                fullWidth
+                compact
+                rightIcon={<RemoveIcon name="close" onClick={handleRemove} />}
+                onClick={() =>
+                  currentAggregation.aggregationIndex === aggregationIndex
+                    ? setCurrentAggregation({
+                        aggregation: undefined,
+                        aggregationIndex: undefined,
+                      })
+                    : setCurrentAggregation({
+                        aggregation,
+                        aggregationIndex,
+                      })
+                }
+              >
+                {displayName}
+              </Button>
+            </Group>
+          );
+        })}
+        <Button
+          onClick={() => {
+            setCurrentAggregation({
+              aggregation: undefined,
+              aggregationIndex: undefined,
+            });
+          }}
+          rightIcon={<Icon name="add" />}
+        />
+      </Stack>
+
+      <ScrollArea h="100%">
+        <SummarizeInnerItem
           query={query}
           stageIndex={stageIndex}
-          aggregations={aggregations}
+          aggregation={currentAggregation.aggregation}
+          aggregationIndex={currentAggregation.aggregationIndex}
           onQueryChange={handleQueryChange}
         />
-        <Divider my="lg" />
-        {hasAggregations && (
-          <SummarizeBreakoutColumnList
-            query={query}
-            stageIndex={stageIndex}
-            onAddBreakout={handleAddBreakout}
-            onUpdateBreakout={handleUpdateBreakout}
-            onRemoveBreakout={handleRemoveBreakout}
-            onReplaceBreakouts={handleReplaceBreakouts}
-          />
-        )}
-      </Stack>
+      </ScrollArea>
 
       <Group>
         <Button variant="filled" onClick={onApplyFilter}>

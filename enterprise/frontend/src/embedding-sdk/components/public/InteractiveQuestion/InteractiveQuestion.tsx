@@ -3,6 +3,7 @@ import type { PropsWithChildren } from "react";
 import { EditorViewControl } from "embedding-sdk/components/private/EditorViewControl";
 import {
   BackButton,
+  Breakout,
   ChartTypeSelector,
   Editor,
   EditorButton,
@@ -22,12 +23,13 @@ import {
   InteractiveQuestionProvider,
   type InteractiveQuestionProviderProps,
 } from "embedding-sdk/components/private/InteractiveQuestion/context";
+import { withPublicComponentWrapper } from "embedding-sdk/components/private/PublicComponentWrapper";
+import type { FlexibleSizeProps } from "embedding-sdk/components/private/util/FlexibleSizeComponent";
+
 import {
   InteractiveQuestionDefaultView,
   type InteractiveQuestionResultProps,
-} from "embedding-sdk/components/private/InteractiveQuestionResult";
-import { withPublicComponentWrapper } from "embedding-sdk/components/private/PublicComponentWrapper";
-import type { FlexibleSizeProps } from "embedding-sdk/components/private/util/FlexibleSizeComponent";
+} from "../../private/InteractiveQuestionDefaultView";
 
 export type InteractiveQuestionProps = PropsWithChildren<{
   questionId?: InteractiveQuestionProviderProps["cardId"];
@@ -107,6 +109,7 @@ const InteractiveQuestion = withPublicComponentWrapper(
   ChartTypeSelector: typeof ChartTypeSelector;
   EditorViewControl: typeof EditorViewControl;
   QuestionSettings: typeof QuestionSettings;
+  Breakout: typeof Breakout;
 };
 
 InteractiveQuestion.BackButton = BackButton;
@@ -129,5 +132,6 @@ InteractiveQuestion.SaveButton = SaveButton;
 InteractiveQuestion.ChartTypeSelector = ChartTypeSelector;
 InteractiveQuestion.EditorViewControl = EditorViewControl;
 InteractiveQuestion.QuestionSettings = QuestionSettings;
+InteractiveQuestion.Breakout = Breakout;
 
 export { InteractiveQuestion };
