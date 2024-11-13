@@ -25,9 +25,7 @@
 (def ^:private explicit-attrs
   "These attributes must be explicitly defined, omitting them could be a source of bugs."
   [:archived
-   :collection-id
-   :database-id
-   :table-id])
+   :collection-id])
 
 (def ^:private optional-attrs
   "These attributes may be omitted (for now) in the interest of brevity in the definitions."
@@ -35,7 +33,9 @@
    :name
    :created-at
    :creator-id
+   :database-id
    :native-query
+   :official-collection
    :dashboardcard-count
    :last-edited-at
    :last-editor-id
@@ -246,6 +246,7 @@
                    (assoc :name ~search-model)
                    (update :attrs #(merge ~default-attrs %)))]
      (validate-spec! spec#)
+     (derive (:model spec#) :hook/search-index)
      (defmethod spec ~search-model [~'_] spec#)))
 
 ;; TODO we should memoize this for production (based on spec values)
@@ -258,12 +259,16 @@
 
 (defn search-models-to-update
   "Given an updated or created instance, return a description of which search-models to (re)index."
-  [instance]
+  [instance & [always?]]
   (into #{}
         (keep
          (fn [{:keys [search-model fields where]}]
-           ;; If there are no changes, treat it as if everything has changed.
-           ;; Likewise, if there are no field dependencies, always do it - this is a hack for dashcards to cards.
-           (when (or (not fields) (some fields (keys (or (t2/changes instance) instance))))
+           (when (or always? (and fields (some fields (keys (or (t2/changes instance) instance)))))
              [search-model (insert-values where :updated instance)])))
         (get (model-hooks) (t2/model instance))))
+
+(comment
+  (doseq [d (descendants :hook/search-index)]
+    (underive d :hook/search-index))
+  (doseq [d (keys (model-hooks))]
+    (derive d :hook/search-index)))

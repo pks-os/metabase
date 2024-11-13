@@ -36,6 +36,8 @@
 (derive :model/ModelIndexValue :metabase/model)
 
 (derive :model/ModelIndex :hook/created-at-timestamped?)
+(derive :model/ModelIndex :hook/search-index)
+(derive :model/ModelIndexValue :hook/search-index)
 
 (t2/deftransforms ModelIndex
   {:pk_ref    mi/transform-field-ref
@@ -188,10 +190,9 @@
    :attrs        {:id            :model_pk
                   :collection-id :collection.id
                   :creator-id    false
-                  :database-id   :model.database_id
-                  :table-id      false
                   ;; this seems wrong, I'd expect it to track whether the model is archived.
                   :archived      false
+                  :database-id   :model.database_id
                   :created-at    false
                   :updated-at    false}
    :search-terms [:name]
