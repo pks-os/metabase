@@ -32,9 +32,9 @@
    [metabase.query-processor.middleware.constraints :as qp.constraints]
    [metabase.query-processor.pivot.test-util :as api.pivots]
    [metabase.request.core :as request]
+   [metabase.sync.task.sync-databases :as task.sync-databases]
    [metabase.task :as task]
    [metabase.task.persist-refresh :as task.persist-refresh]
-   [metabase.task.sync-databases :as task.sync-databases]
    [metabase.test :as mt]
    [metabase.test.data.users :as test.users]
    [metabase.test.util :as tu]
@@ -3514,7 +3514,7 @@
                 (t2/update! :model/Database other-db-id {:uploads_enabled false})
                 (is (nil? (:based_on_upload (request card))))))))))))
 
-(deftest ^:mb/once based-on-upload-test
+(deftest based-on-upload-test
   (run-based-on-upload-test!
    (fn [card]
      (mt/user-http-request :crowberto :get 200 (str "card/" (:id card))))))

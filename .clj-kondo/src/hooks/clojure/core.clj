@@ -53,6 +53,8 @@
      metabase.analytics.snowplow-test/fake-track-event-impl!
      metabase.analytics.snowplow/track-event-impl!
      metabase.api.public-test/add-card-to-dashboard!
+     metabase.channel.email-test/reset-inbox!
+     metabase.channel.email/send-email!
      metabase.cmd.dump-to-h2/dump-to-h2!
      metabase.cmd.load-from-h2/load-from-h2!
      metabase.core.core/ensure-audit-db-installed!
@@ -65,8 +67,6 @@
      metabase.driver.postgres-test/create-enums-db!
      metabase.driver.postgres-test/drop-if-exists-and-create-db!
      metabase.driver.sql-jdbc.execute/execute-statement!
-     metabase.email-test/reset-inbox!
-     metabase.email/send-email!
      metabase.models.action/insert!
      metabase.models.collection.graph-test/clear-graph-revisions!
      metabase.models.collection.graph-test/do-with-n-temp-users-with-personal-collections!
@@ -98,11 +98,11 @@
      metabase.query-processor.streaming.interface/write-row!
      metabase.sample-data/try-to-extract-sample-database!
      metabase.setup.core/create-token!
+     metabase.sync.core/sync-database!
      metabase.sync.sync-metadata.fields.sync-metadata/update-field-metadata-if-needed!
      metabase.sync.sync-metadata/sync-db-metadata!
      metabase.sync.util-test/sync-database!
      metabase.sync.util/store-sync-summary!
-     metabase.sync/sync-database!
      metabase.task.index-values/job-init!
      metabase.task.persist-refresh/job-init!
      metabase.task.persist-refresh/refresh-tables!
